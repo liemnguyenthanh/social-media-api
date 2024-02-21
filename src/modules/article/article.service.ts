@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { Article, ArticleDocument } from './article.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Article, ArticleDocument } from './entities/article.entity';
 
 @Injectable()
 export class ArticleService {
   constructor(
     @InjectModel(Article.name) private readonly _articleModel: Model<ArticleDocument>
-  ) {}
+  ) { }
 
   create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article';
+    return createArticleDto;
   }
 
   findAll() {

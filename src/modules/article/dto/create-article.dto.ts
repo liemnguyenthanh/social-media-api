@@ -1,7 +1,7 @@
+import { IsNotEmpty, IsString } from "class-validator";
+
 export class CreateArticleDto {
-  author: string;
-  content: string;
-  slug: string;
-  createdAt: Date;
-  deletedAt?: Date;
+  @IsString()
+  @IsNotEmpty({ message: "author is not empty" })
+  readonly content: string;
 }
