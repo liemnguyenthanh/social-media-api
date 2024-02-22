@@ -1,13 +1,14 @@
-import { BaseEntity } from "src/modules/shared/base/base.entiry";
-
+import { BaseEntity } from "src/modules/shared/base/base.entity";
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import { Document } from 'mongoose'
+import mongoose, { HydratedDocument } from 'mongoose'
+import { User } from "src/modules/user/entities/user.entity";
 
-export type ArticleDocument = Article & Document
+export type ArticleDocument = HydratedDocument<Article>;
+
 @Schema()
 export class Article extends BaseEntity {
-  @Prop({ require: true })
-  author: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name, require: true })
+  author: User;
 
   @Prop({ require: true })
   content: string;

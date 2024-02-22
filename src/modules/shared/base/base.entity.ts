@@ -1,10 +1,12 @@
 import { Prop } from "@nestjs/mongoose"
+import { ObjectId } from "mongoose";
 
 export class BaseEntity {
-  _id?: string;
+  _id?: ObjectId;
 
-  @Prop({ required: true })
-  created_at: Date;
+  created_at?: Date;
+  
+  updated_at?: Date;
 
   @Prop({ default: null })
   deleted_at: Date

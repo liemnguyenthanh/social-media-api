@@ -5,6 +5,7 @@ import { ArticleModule } from '../article/article.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import configuration from 'src/config/configuration';
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
         uri: config.get<string>('MONGODB_URI'), // Loaded from .ENV
       })
     }),
-    ArticleModule
+    ArticleModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],
