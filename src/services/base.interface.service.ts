@@ -1,4 +1,4 @@
-import { FindAllResponse } from "src/repositories/base.interface.repository";
+import { FindAllResponse } from 'src/repositories/base.interface.repository';
 
 export interface Write<T> {
   create(item: T | any): Promise<T>;
@@ -7,11 +7,8 @@ export interface Write<T> {
 }
 
 export interface Read<T> {
-  findAll(
-    filter?: object,
-    options?: object,
-  ): Promise<FindAllResponse<T>>;
+  findAll(filter?: object, options?: object): Promise<FindAllResponse<T>>;
   findOne(id: string): Promise<T>;
 }
 
-export interface BaseServiceInterface<T> extends Write<T>, Read<T> { }
+export interface BaseServiceInterface<T> extends Write<T>, Read<T> {}

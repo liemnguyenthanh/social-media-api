@@ -1,5 +1,8 @@
 import { FilterQuery, Model, QueryOptions } from 'mongoose';
-import { BaseRepositoryInterface, FindAllResponse } from './base.interface.repository';
+import {
+  BaseRepositoryInterface,
+  FindAllResponse,
+} from './base.interface.repository';
 import { BaseEntity } from '../modules/shared/base/base.entity';
 
 export abstract class BaseRepositoryAbstract<T extends BaseEntity>
@@ -34,9 +37,13 @@ export abstract class BaseRepositoryAbstract<T extends BaseEntity>
   ): Promise<FindAllResponse<T>> {
     const [count, items] = await Promise.all([
       this.model.countDocuments({ ...condition, deleted_at: null }),
-      this.model.find({ ...condition, deleted_at: null }, options?.projection, options),
+      this.model.find(
+        { ...condition, deleted_at: null },
+        options?.projection,
+        options,
+      ),
     ]);
-    
+
     return {
       count,
       items,

@@ -1,11 +1,14 @@
-import { BaseEntity } from "src/modules/shared/base/base.entity";
-import { BaseServiceInterface } from "./base.interface.service";
-import { BaseRepositoryInterface, FindAllResponse } from "src/repositories/base.interface.repository";
-
+import { BaseEntity } from 'src/modules/shared/base/base.entity';
+import { BaseServiceInterface } from './base.interface.service';
+import {
+  BaseRepositoryInterface,
+  FindAllResponse,
+} from 'src/repositories/base.interface.repository';
 
 export abstract class BaseServiceAbstract<T extends BaseEntity>
-  implements BaseServiceInterface<T> {
-  constructor(private readonly repository: BaseRepositoryInterface<T>) { }
+  implements BaseServiceInterface<T>
+{
+  constructor(private readonly repository: BaseRepositoryInterface<T>) {}
 
   async create(create_dto: T | any): Promise<T> {
     return await this.repository.create(create_dto);
@@ -17,7 +20,7 @@ export abstract class BaseServiceAbstract<T extends BaseEntity>
   ): Promise<FindAllResponse<T>> {
     return await this.repository.findAll(filter, options);
   }
-  
+
   async findOne(id: string) {
     return await this.repository.findOneById(id);
   }

@@ -15,4 +15,4 @@ import { User, UserSchema } from './entities/user.entity';
     { provide: 'UserRepositoryInterfaceModel', useClass: UserRepository },
   ],
 })
-export class UserModule { }
+export class UserModule {}

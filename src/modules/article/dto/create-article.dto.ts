@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateArticleDto {
   @IsString()
-  @IsNotEmpty({ message: "author is not empty" })
+  @IsNotEmpty({ message: 'author is not empty' })
   readonly content: string;
 }

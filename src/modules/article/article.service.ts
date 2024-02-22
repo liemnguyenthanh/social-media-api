@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CreateArticleDto } from './dto/create-article.dto';
 import { Article, ArticleDocument } from './entities/article.entity';
 
 @Injectable()
 export class ArticleService {
   constructor(
-    @InjectModel(Article.name) private readonly _articleModel: Model<ArticleDocument>
-  ) { }
+    @InjectModel(Article.name)
+    private readonly _articleModel: Model<ArticleDocument>,
+  ) {}
 
   create(createArticleDto: CreateArticleDto) {
     return createArticleDto;
@@ -23,7 +23,7 @@ export class ArticleService {
     return `This action returns a #${id} article`;
   }
 
-  update(id: number, updateArticleDto: UpdateArticleDto) {
+  update(id: number) {
     return `This action updates a #${id} article`;
   }
 

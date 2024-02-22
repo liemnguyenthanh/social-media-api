@@ -11,4 +11,4 @@ import { Article, ArticleSchema } from './entities/article.entity';
   controllers: [ArticleController],
   providers: [ArticleService],
 })
-export class ArticleModule { }
+export class ArticleModule {}

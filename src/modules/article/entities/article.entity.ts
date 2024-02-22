@@ -1,7 +1,7 @@
-import { BaseEntity } from "src/modules/shared/base/base.entity";
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import mongoose, { HydratedDocument } from 'mongoose'
-import { User } from "src/modules/user/entities/user.entity";
+import { BaseEntity } from 'src/modules/shared/base/base.entity';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { User } from 'src/modules/user/entities/user.entity';
 
 export type ArticleDocument = HydratedDocument<Article>;
 
@@ -17,4 +17,4 @@ export class Article extends BaseEntity {
   slug: string;
 }
 
-export const ArticleSchema = SchemaFactory.createForClass(Article)
+export const ArticleSchema = SchemaFactory.createForClass(Article);
