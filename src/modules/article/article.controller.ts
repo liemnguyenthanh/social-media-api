@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('article')
+@ApiTags('Articles')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
