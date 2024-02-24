@@ -4,9 +4,11 @@ import { FindAllResponse } from 'src/repositories/base.interface.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
 @UseInterceptors(MongooseClassSerializerInterceptor(User))
+@ApiTags('Users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

@@ -8,13 +8,20 @@ import {
   Param,
   Patch,
   Post,
+  UseInterceptors,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import MongooseClassSerializerInterceptor from 'src/interceptors/mongoose-class-serializer.interceptor';
+import { FindAllResponse } from 'src/repositories/base.interface.repository';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { Article } from './entities/article.entity';
 
 @Controller('article')
+@UseInterceptors(MongooseClassSerializerInterceptor(Article))
+@ApiTags('Articles')
 export class ArticleController {
-  constructor(private readonly articleService: ArticleService) {}
+  constructor(private readonly articleService: ArticleService) { }
 
   @Post()
   @HttpCode(HttpStatus.OK)
@@ -23,7 +30,7 @@ export class ArticleController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<FindAllResponse<Article>> {
     return this.articleService.findAll();
   }
 

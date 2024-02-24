@@ -1,13 +1,15 @@
 import { Prop } from '@nestjs/mongoose';
-import { ObjectId } from 'mongoose';
+import { Transform } from 'class-transformer';
 
 export class BaseEntity {
-  _id?: ObjectId;
+  
+  @Transform((value) => value.obj._id.toString())
+  _id?: string;
 
   created_at?: Date;
 
   updated_at?: Date;
 
-  @Prop({ default: null })
+  @Prop({ default: null, select: false })
   deleted_at: Date;
 }
