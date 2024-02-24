@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, PopulateOptions } from 'mongoose';
 import { BaseRepositoryAbstract } from 'src/repositories/base.abstract.repository';
 import { FindAllResponse } from 'src/repositories/base.interface.repository';
-import { ArticleRepositoryInterface } from './Article.interface';
+import { ArticleRepositoryInterface } from './article.interface';
 import { Article } from './entities/article.entity';
 
 @Injectable()

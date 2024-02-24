@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FindAllResponse } from 'src/repositories/base.interface.repository';
-import { ArticleRepositoryInterface } from './Article.interface';
+import { ArticleRepositoryInterface } from './article.interface';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
 
