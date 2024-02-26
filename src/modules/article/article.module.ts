@@ -15,4 +15,4 @@ import { ArticleRepository } from './article.repository';
     { provide: 'ArticleRepositoryInterfaceModel', useClass: ArticleRepository },
   ],
 })
-export class ArticleModule { }
+export class ArticleModule {}

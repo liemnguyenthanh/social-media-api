@@ -21,7 +21,7 @@ import { Article } from './entities/article.entity';
 @UseInterceptors(MongooseClassSerializerInterceptor(Article))
 @ApiTags('Articles')
 export class ArticleController {
-  constructor(private readonly articleService: ArticleService) { }
+  constructor(private readonly articleService: ArticleService) {}
 
   @Post()
   @HttpCode(HttpStatus.OK)

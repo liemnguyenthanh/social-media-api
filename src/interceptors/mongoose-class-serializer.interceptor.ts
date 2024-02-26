@@ -25,7 +25,7 @@ export default function MongooseClassSerializerInterceptor(
         return document;
       }
       return plainToClass(classToIntercept, document.toJSON(), {
-        excludePrefixes: ['__v']
+        excludePrefixes: ['__v'],
       });
     }
 
