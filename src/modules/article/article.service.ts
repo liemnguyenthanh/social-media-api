@@ -9,30 +9,41 @@ import { Article } from './entities/article.entity';
 export class ArticleService {
   constructor(
     @InjectModel('ArticleRepositoryInterface')
-    private readonly article_repository: ArticleRepositoryInterface
-  ) { }
+    private readonly article_repository: ArticleRepositoryInterface,
+  ) {}
 
   populateAuthor = {
     path: 'author',
-    select: ['_id', 'username']
-  }
+    select: ['_id', 'username'],
+  };
 
   async create(createArticleDto: CreateArticleDto): Promise<Article> {
     // FIXME: add user when app has the token
     const newArticle = {
       author: '65d6d1421d65dc45e31288ab',
       content: createArticleDto.content,
-    }
+    };
     const article = await this.article_repository.create(newArticle);
     const condition = {
-      _id: article._id
-    }
-    const projection = ''
-    return await this.article_repository.findWithSubFields(condition, projection, this.populateAuthor)
+      _id: article._id,
+    };
+    const projection = '';
+    return await this.article_repository.findWithSubFields(
+      condition,
+      projection,
+      this.populateAuthor,
+    );
   }
 
-  async findAll(filter?: object, projection?: string): Promise<FindAllResponse<Article>> {
-    return await this.article_repository.findAllWithSubFields(filter, projection, this.populateAuthor)
+  async findAll(
+    filter?: object,
+    projection?: string,
+  ): Promise<FindAllResponse<Article>> {
+    return await this.article_repository.findAllWithSubFields(
+      filter,
+      projection,
+      this.populateAuthor,
+    );
   }
 
   findOne(id: number) {

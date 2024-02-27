@@ -2,6 +2,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './modules/app/app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,9 @@ async function bootstrap() {
       validationError: { target: false },
     }),
   );
+
+  const configService = app.get(ConfigService);
+  const port = configService.get('port');
   const config = new DocumentBuilder()
     .setTitle('Social media api')
     .setDescription('The social media API description')
@@ -26,6 +30,6 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(8080);
+  await app.listen(port);
 }
 bootstrap();

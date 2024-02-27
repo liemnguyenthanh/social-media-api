@@ -15,7 +15,7 @@ export class User extends BaseEntity {
   @Prop()
   phone?: string;
 
-  @Prop({ require: true, select: false })
+  @Prop({ require: true })
   password: string;
 }
 
