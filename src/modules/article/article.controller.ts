@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -28,8 +29,9 @@ export class ArticleController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articleService.create(createArticleDto);
+  create(@Body() createArticleDto: CreateArticleDto, @Request() req) {
+    const userId = req.user.userId;
+    return this.articleService.create(createArticleDto, userId);
   }
 
   @Get()

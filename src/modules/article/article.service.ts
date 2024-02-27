@@ -17,17 +17,18 @@ export class ArticleService {
     select: ['_id', 'username'],
   };
 
-  async create(createArticleDto: CreateArticleDto): Promise<Article> {
-    // FIXME: add user when app has the token
+  async create(
+    createArticleDto: CreateArticleDto,
+    userId: string,
+  ): Promise<Article> {
     const newArticle = {
-      author: '65d6d1421d65dc45e31288ab',
+      author: userId,
       content: createArticleDto.content,
     };
     const article = await this.article_repository.create(newArticle);
-    const condition = {
-      _id: article._id,
-    };
+    const condition = { _id: article._id };
     const projection = '';
+
     return await this.article_repository.findWithSubFields(
       condition,
       projection,

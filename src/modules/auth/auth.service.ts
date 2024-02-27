@@ -7,12 +7,12 @@ export class AuthService {
   constructor(
     private readonly user_service: UserService,
     private readonly jwtService: JwtService,
-  ) { }
+  ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.user_service.findOneByCondition({ username });
 
-    if (!user) return null
+    if (!user) return null;
 
     const match = await bcrypt.compare(pass, user.password);
 
@@ -22,7 +22,7 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const payload = { username: user.username, userId: user._id };
     return {
       access_token: this.jwtService.sign(payload),
     };
