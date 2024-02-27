@@ -25,6 +25,10 @@ export abstract class BaseServiceAbstract<T extends BaseEntity>
     return await this.repository.findOneById(id);
   }
 
+  async findOneByCondition(conditions: object) {
+    return await this.repository.findOneByCondition(conditions);
+  }
+
   async update(id: string, update_dto: Partial<T>) {
     return await this.repository.update(id, update_dto);
   }
