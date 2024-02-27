@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -16,6 +17,7 @@ import { FindAllResponse } from 'src/repositories/base.interface.repository';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('article')
 @UseInterceptors(MongooseClassSerializerInterceptor(Article))
@@ -24,12 +26,14 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   create(@Body() createArticleDto: CreateArticleDto) {
     return this.articleService.create(createArticleDto);
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll(): Promise<FindAllResponse<Article>> {
     return this.articleService.findAll();
   }
