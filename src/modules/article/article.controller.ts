@@ -6,18 +6,20 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
+  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import MongooseClassSerializerInterceptor from 'src/interceptors/mongoose-class-serializer.interceptor';
-import { FindAllResponse } from 'src/repositories/base.interface.repository';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('article')
 @UseInterceptors(MongooseClassSerializerInterceptor(Article))
@@ -28,14 +30,18 @@ export class ArticleController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articleService.create(createArticleDto);
+  create(@Body() createArticleDto: CreateArticleDto, @Request() req) {
+    const userId = req.user.userId;
+    return this.articleService.create(createArticleDto, userId);
   }
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  findAll(): Promise<FindAllResponse<Article>> {
-    return this.articleService.findAll();
+  findAll(
+    @Query('last_id') last_id: string,
+    @Query('limit', ParseIntPipe) limit: string,
+  ): Promise<Article[]> {
+    return this.articleService.findAllUsingKeyset(last_id, +limit);
   }
 
   @Get(':id')

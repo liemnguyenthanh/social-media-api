@@ -1,9 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FindAllResponse } from 'src/repositories/base.interface.repository';
 import { ArticleRepositoryInterface } from './article.interface';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
+import mongoose from 'mongoose';
+
+const populateAuthor = {
+  path: 'author',
+  select: ['_id', 'username', 'full_name'],
+};
 
 @Injectable()
 export class ArticleService {
@@ -12,38 +17,47 @@ export class ArticleService {
     private readonly article_repository: ArticleRepositoryInterface,
   ) {}
 
-  populateAuthor = {
-    path: 'author',
-    select: ['_id', 'username'],
-  };
-
-  async create(createArticleDto: CreateArticleDto): Promise<Article> {
-    // FIXME: add user when app has the token
+  async create(
+    createArticleDto: CreateArticleDto,
+    userId: string,
+  ): Promise<Article> {
     const newArticle = {
-      author: '65d6d1421d65dc45e31288ab',
+      author: userId,
       content: createArticleDto.content,
     };
     const article = await this.article_repository.create(newArticle);
-    const condition = {
-      _id: article._id,
-    };
-    const projection = '';
-    return await this.article_repository.findWithSubFields(
-      condition,
-      projection,
-      this.populateAuthor,
-    );
+
+    return await this.article_repository.findOneById(article._id, {
+      populate: populateAuthor,
+    });
   }
 
-  async findAll(
-    filter?: object,
-    projection?: string,
-  ): Promise<FindAllResponse<Article>> {
-    return await this.article_repository.findAllWithSubFields(
-      filter,
-      projection,
-      this.populateAuthor,
-    );
+  // TODO: get items by offset with id
+  async findAllUsingKeyset(
+    last_id?: string,
+    limit?: number,
+  ): Promise<Article[]> {
+    let query = null;
+
+    // Check id article is existing and add into query
+    if (last_id && mongoose.Types.ObjectId.isValid(last_id)) {
+      const existing_article =
+        await this.article_repository.findOneById(last_id);
+      if (existing_article) {
+        query = {
+          _id: {
+            $gt: last_id,
+          },
+        };
+      }
+    }
+    const protections = '';
+    const populate = {
+      populate: populateAuthor,
+      limit,
+      sort: { _id: 1 },
+    };
+    return await this.article_repository.findAll(query, protections, populate);
   }
 
   findOne(id: number) {

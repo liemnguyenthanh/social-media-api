@@ -1,11 +1,10 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FindAllResponse } from 'src/repositories/base.interface.repository';
+import * as bcrypt from 'bcrypt';
 import { BaseServiceAbstract } from 'src/services/base.abstract.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UserRepositoryInterface } from './user.interface';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService extends BaseServiceAbstract<User> {
@@ -32,8 +31,9 @@ export class UserService extends BaseServiceAbstract<User> {
 
   async findAll(
     filter?: object,
+    protections?: string,
     options?: object,
-  ): Promise<FindAllResponse<User>> {
-    return await this.user_repository.findAll(filter, options);
+  ): Promise<User[]> {
+    return await this.user_repository.findAll(filter, protections, options);
   }
 }
