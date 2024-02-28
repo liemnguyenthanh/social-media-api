@@ -1,10 +1,9 @@
 import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import MongooseClassSerializerInterceptor from 'src/interceptors/mongoose-class-serializer.interceptor';
-import { FindAllResponse } from 'src/repositories/base.interface.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
-import { ApiTags } from '@nestjs/swagger';
 
 @Controller('user')
 @UseInterceptors(MongooseClassSerializerInterceptor(User))
@@ -18,7 +17,7 @@ export class UserController {
   }
 
   @Get()
-  findAll(): Promise<FindAllResponse<User>> {
+  findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
