@@ -1,9 +1,7 @@
 import { BaseEntity } from 'src/modules/shared/base/base.entity';
+import { BaseRepositoryInterface } from 'src/repositories/base.interface.repository';
 import { BaseServiceInterface } from './base.interface.service';
-import {
-  BaseRepositoryInterface,
-  FindAllResponse,
-} from 'src/repositories/base.interface.repository';
+import { QueryOptions } from 'mongoose';
 
 export abstract class BaseServiceAbstract<T extends BaseEntity>
   implements BaseServiceInterface<T>
@@ -16,9 +14,10 @@ export abstract class BaseServiceAbstract<T extends BaseEntity>
 
   async findAll(
     filter?: object,
-    options?: object,
-  ): Promise<FindAllResponse<T>> {
-    return await this.repository.findAll(filter, options);
+    protections?: string,
+    options?: QueryOptions,
+  ): Promise<T[]> {
+    return await this.repository.findAll(filter, protections, options);
   }
 
   async findOne(id: string) {

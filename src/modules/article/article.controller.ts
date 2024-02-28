@@ -14,11 +14,10 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import MongooseClassSerializerInterceptor from 'src/interceptors/mongoose-class-serializer.interceptor';
-import { FindAllResponse } from 'src/repositories/base.interface.repository';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('article')
 @UseInterceptors(MongooseClassSerializerInterceptor(Article))
@@ -36,8 +35,8 @@ export class ArticleController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  findAll(): Promise<FindAllResponse<Article>> {
-    return this.articleService.findAll();
+  findAll(): Promise<Article[]> {
+    return this.articleService.findAll({});
   }
 
   @Get(':id')

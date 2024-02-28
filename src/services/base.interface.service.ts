@@ -1,5 +1,3 @@
-import { FindAllResponse } from 'src/repositories/base.interface.repository';
-
 export interface Write<T> {
   create(item: T | any): Promise<T>;
   update(id: string, item: Partial<T>): Promise<T>;
@@ -7,7 +5,11 @@ export interface Write<T> {
 }
 
 export interface Read<T> {
-  findAll(filter?: object, options?: object): Promise<FindAllResponse<T>>;
+  findAll(
+    filter?: object,
+    protections?: string,
+    options?: object,
+  ): Promise<T[]>;
   findOne(id: string): Promise<T>;
 }
 

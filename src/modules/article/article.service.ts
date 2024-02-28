@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FindAllResponse } from 'src/repositories/base.interface.repository';
 import { ArticleRepositoryInterface } from './article.interface';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
@@ -14,7 +13,7 @@ export class ArticleService {
 
   populateAuthor = {
     path: 'author',
-    select: ['_id', 'username'],
+    select: ['_id', 'username', 'full_name'],
   };
 
   async create(
@@ -26,25 +25,22 @@ export class ArticleService {
       content: createArticleDto.content,
     };
     const article = await this.article_repository.create(newArticle);
-    const condition = { _id: article._id };
-    const projection = '';
 
-    return await this.article_repository.findWithSubFields(
-      condition,
-      projection,
-      this.populateAuthor,
-    );
+    return await this.article_repository.findOneById(article._id, {
+      populate: {
+        ...this.populateAuthor,
+      },
+    });
   }
 
-  async findAll(
-    filter?: object,
-    projection?: string,
-  ): Promise<FindAllResponse<Article>> {
-    return await this.article_repository.findAllWithSubFields(
-      filter,
-      projection,
-      this.populateAuthor,
-    );
+  // TODO: get items by offset with id
+  async findAll(filter?: object): Promise<Article[]> {
+    return await this.article_repository.findAll(filter, '', {
+      populate: {
+        path: 'author',
+        select: ['_id', 'username', 'full_name'],
+      },
+    });
   }
 
   findOne(id: number) {
