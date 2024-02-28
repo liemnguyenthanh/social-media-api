@@ -3,6 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ArticleRepositoryInterface } from './article.interface';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
+import mongoose from 'mongoose';
+
+const populateAuthor = {
+  path: 'author',
+  select: ['_id', 'username', 'full_name'],
+};
 
 @Injectable()
 export class ArticleService {
@@ -10,11 +16,6 @@ export class ArticleService {
     @InjectModel('ArticleRepositoryInterface')
     private readonly article_repository: ArticleRepositoryInterface,
   ) {}
-
-  populateAuthor = {
-    path: 'author',
-    select: ['_id', 'username', 'full_name'],
-  };
 
   async create(
     createArticleDto: CreateArticleDto,
@@ -27,20 +28,36 @@ export class ArticleService {
     const article = await this.article_repository.create(newArticle);
 
     return await this.article_repository.findOneById(article._id, {
-      populate: {
-        ...this.populateAuthor,
-      },
+      populate: populateAuthor,
     });
   }
 
   // TODO: get items by offset with id
-  async findAll(filter?: object): Promise<Article[]> {
-    return await this.article_repository.findAll(filter, '', {
-      populate: {
-        path: 'author',
-        select: ['_id', 'username', 'full_name'],
-      },
-    });
+  async findAllUsingKeyset(
+    last_id?: string,
+    limit?: number,
+  ): Promise<Article[]> {
+    let query = null;
+
+    // Check id article is existing and add into query
+    if (last_id && mongoose.Types.ObjectId.isValid(last_id)) {
+      const existing_article =
+        await this.article_repository.findOneById(last_id);
+      if (existing_article) {
+        query = {
+          _id: {
+            $gt: last_id,
+          },
+        };
+      }
+    }
+    const protections = '';
+    const populate = {
+      populate: populateAuthor,
+      limit,
+      sort: { _id: 1 },
+    };
+    return await this.article_repository.findAll(query, protections, populate);
   }
 
   findOne(id: number) {

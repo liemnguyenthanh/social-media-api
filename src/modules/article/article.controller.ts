@@ -6,8 +6,10 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
   UseInterceptors,
@@ -35,8 +37,11 @@ export class ArticleController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  findAll(): Promise<Article[]> {
-    return this.articleService.findAll({});
+  findAll(
+    @Query('last_id') last_id: string,
+    @Query('limit', ParseIntPipe) limit: string,
+  ): Promise<Article[]> {
+    return this.articleService.findAllUsingKeyset(last_id, +limit);
   }
 
   @Get(':id')
