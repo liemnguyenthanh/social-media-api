@@ -20,6 +20,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Controller('article')
 @UseInterceptors(MongooseClassSerializerInterceptor(Article))
@@ -36,7 +37,6 @@ export class ArticleController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   findAll(
     @Query('last_id') last_id: string,
     @Query('limit', ParseIntPipe) limit: string,
@@ -46,16 +46,24 @@ export class ArticleController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.articleService.findOne(+id);
+    return this.articleService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string) {
-    return this.articleService.update(+id);
+  update(
+    @Param('id') id: string,
+    @Body() updateArticle: UpdateArticleDto,
+    @Request() req,
+  ) {
+    const userId = req.user.userId;
+    return this.articleService.update(id, updateArticle, userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.articleService.remove(+id);
+  remove(@Param('id') id: string, @Request() req) {
+    const userId = req.user.userId;
+    return { delete: this.articleService.remove(id, userId) };
   }
 }
