@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 import { ArticleRepositoryInterface } from './article.interface';
 import { CreateArticleDto } from './dto/create-article.dto';
+import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
-import mongoose from 'mongoose';
 
 const populateAuthor = {
   path: 'author',
@@ -16,6 +17,26 @@ export class ArticleService {
     @InjectModel('ArticleRepositoryInterface')
     private readonly article_repository: ArticleRepositoryInterface,
   ) {}
+
+  async ownerArticle(id: string, user_id: string): Promise<Article> {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Article not found');
+    }
+
+    const article = await this.article_repository.findOneById(id);
+
+    if (!article) {
+      throw new BadRequestException('Article not found');
+    }
+
+    const is_author = article.author.toString() === user_id;
+
+    if (!is_author) {
+      throw new BadRequestException('User is not the author of the article');
+    }
+
+    return article;
+  }
 
   async create(
     createArticleDto: CreateArticleDto,
@@ -32,7 +53,6 @@ export class ArticleService {
     });
   }
 
-  // TODO: get items by offset with id
   async findAllUsingKeyset(
     last_id?: string,
     limit?: number,
@@ -60,15 +80,19 @@ export class ArticleService {
     return await this.article_repository.findAll(query, protections, populate);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} article`;
+  async findOne(id: string) {
+    return await this.article_repository.findOneById(id, {
+      populate: populateAuthor,
+    });
   }
 
-  update(id: number) {
-    return `This action updates a #${id} article`;
+  async update(id: string, updateArticle: UpdateArticleDto, userId: string) {
+    await this.ownerArticle(id, userId);
+    return this.article_repository.update(id, updateArticle);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} article`;
+  async remove(id: string, userId: string) {
+    await this.ownerArticle(id, userId);
+    return this.article_repository.permanentlyDelete(id);
   }
 }
