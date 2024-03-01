@@ -42,12 +42,9 @@ jobs:
 
     - name: nest build
       run: npm run build
-     
+    
+    - name: Serverless AWS authentication
+      run: sls config credentials --provider aws --key AKIA6GBMFBUNIEKNJ4SV --secret 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
+    
     - name: Deploy lambda function
       run: sls deploy
-
-      env:
-        # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
-        # or if using AWS credentials directly
-        AWS_ACCESS_KEY_ID: AKIA6GBMFBUNIEKNJ4SV
-        AWS_SECRET_ACCESS_KEY: 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
