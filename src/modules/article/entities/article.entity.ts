@@ -14,6 +14,9 @@ export class Article extends BaseEntity {
 
   @Prop({ require: true })
   content: string;
+
+  @Prop()
+  attachments?: string[];
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);
