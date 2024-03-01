@@ -49,5 +49,5 @@ jobs:
       env:
         # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
         # or if using AWS credentials directly
-        AWS_ACCESS_KEY_ID: AKIA6GBMFBUNCFMWO4WZ
-        AWS_SECRET_ACCESS_KEY: 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
+        AWS_ACCESS_KEY_ID: AKIA6GBMFBUNIEKNJ4SV
+        AWS_SECRET_ACCESS_KEY: 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
