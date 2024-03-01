@@ -45,6 +45,8 @@ export class ArticleService {
     const newArticle = {
       author: userId,
       content: createArticleDto.content,
+      //TODO: handle async attachments with content
+      attachments: createArticleDto.attachments,
     };
     const article = await this.article_repository.create(newArticle);
 
