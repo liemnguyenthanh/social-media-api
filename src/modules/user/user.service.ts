@@ -10,15 +10,15 @@ import { UserRepositoryInterface } from './user.interface';
 export class UserService extends BaseServiceAbstract<User> {
   constructor(
     @InjectModel('UserRepositoryInterface')
-    private readonly user_repository: UserRepositoryInterface,
+    private readonly userRepository: UserRepositoryInterface,
   ) {
-    super(user_repository);
+    super(userRepository);
   }
   async create(createUserDto: CreateUserDto) {
-    const existing_user = await this.user_repository.findOneByCondition({
+    const existingUser = await this.userRepository.findOneByCondition({
       username: createUserDto.username,
     });
-    if (existing_user) {
+    if (existingUser) {
       throw new ConflictException('Username is already taken');
     }
 
@@ -26,7 +26,7 @@ export class UserService extends BaseServiceAbstract<User> {
     const hashPassword = await bcrypt.hash(createUserDto.password, salt);
     createUserDto.password = hashPassword;
 
-    return await this.user_repository.create(createUserDto);
+    return await this.userRepository.create(createUserDto);
   }
 
   async findAll(
@@ -34,6 +34,6 @@ export class UserService extends BaseServiceAbstract<User> {
     protections?: string,
     options?: object,
   ): Promise<User[]> {
-    return await this.user_repository.findAll(filter, protections, options);
+    return await this.userRepository.findAll(filter, protections, options);
   }
 }

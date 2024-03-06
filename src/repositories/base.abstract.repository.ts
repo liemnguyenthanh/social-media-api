@@ -10,8 +10,8 @@ export abstract class BaseRepositoryAbstract<T extends BaseEntity>
   }
 
   async create(dto: T | any): Promise<T> {
-    const created_data = await this.model.create(dto);
-    return created_data;
+    const createdData = await this.model.create(dto);
+    return createdData;
   }
 
   async findOneById(id: string, options?: QueryOptions): Promise<T> {

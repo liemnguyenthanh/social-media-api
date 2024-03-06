@@ -8,8 +8,8 @@ export abstract class BaseServiceAbstract<T extends BaseEntity>
 {
   constructor(private readonly repository: BaseRepositoryInterface<T>) {}
 
-  async create(create_dto: T | any): Promise<T> {
-    return await this.repository.create(create_dto);
+  async create(createDto: T | any): Promise<T> {
+    return await this.repository.create(createDto);
   }
 
   async findAll(
@@ -28,8 +28,8 @@ export abstract class BaseServiceAbstract<T extends BaseEntity>
     return await this.repository.findOneByCondition(conditions);
   }
 
-  async update(id: string, update_dto: Partial<T>) {
-    return await this.repository.update(id, update_dto);
+  async update(id: string, updateDto: Partial<T>) {
+    return await this.repository.update(id, updateDto);
   }
 
   async remove(id: string) {

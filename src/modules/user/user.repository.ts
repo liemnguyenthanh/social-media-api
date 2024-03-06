@@ -12,8 +12,8 @@ export class UserRepository
 {
   constructor(
     @InjectModel(User.name)
-    private readonly user_repository: Model<User>,
+    private readonly userRepository: Model<User>,
   ) {
-    super(user_repository);
+    super(userRepository);
   }
 }

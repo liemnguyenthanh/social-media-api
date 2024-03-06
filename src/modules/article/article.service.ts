@@ -15,7 +15,7 @@ const populateAuthor = {
 export class ArticleService {
   constructor(
     @InjectModel('ArticleRepositoryInterface')
-    private readonly article_repository: ArticleRepositoryInterface,
+    private readonly articleRepository: ArticleRepositoryInterface,
   ) {}
 
   async ownerArticle(id: string, user_id: string): Promise<Article> {
@@ -23,15 +23,15 @@ export class ArticleService {
       throw new BadRequestException('Article not found');
     }
 
-    const article = await this.article_repository.findOneById(id);
+    const article = await this.articleRepository.findOneById(id);
 
     if (!article) {
       throw new BadRequestException('Article not found');
     }
 
-    const is_author = article.author.toString() === user_id;
+    const isAuthor = article.author.toString() === user_id;
 
-    if (!is_author) {
+    if (!isAuthor) {
       throw new BadRequestException('User is not the author of the article');
     }
 
@@ -48,9 +48,9 @@ export class ArticleService {
       //TODO: handle async attachments with content
       attachments: createArticleDto.attachments,
     };
-    const article = await this.article_repository.create(newArticle);
+    const article = await this.articleRepository.create(newArticle);
 
-    return await this.article_repository.findOneById(article._id, {
+    return await this.articleRepository.findOneById(article._id, {
       populate: populateAuthor,
     });
   }
@@ -63,9 +63,8 @@ export class ArticleService {
 
     // Check id article is existing and add into query
     if (last_id && mongoose.Types.ObjectId.isValid(last_id)) {
-      const existing_article =
-        await this.article_repository.findOneById(last_id);
-      if (existing_article) {
+      const existingArticle = await this.articleRepository.findOneById(last_id);
+      if (existingArticle) {
         query = {
           _id: {
             $gt: last_id,
@@ -79,22 +78,22 @@ export class ArticleService {
       limit,
       sort: { _id: 1 },
     };
-    return await this.article_repository.findAll(query, protections, populate);
+    return await this.articleRepository.findAll(query, protections, populate);
   }
 
   async findOne(id: string) {
-    return await this.article_repository.findOneById(id, {
+    return await this.articleRepository.findOneById(id, {
       populate: populateAuthor,
     });
   }
 
   async update(id: string, updateArticle: UpdateArticleDto, userId: string) {
     await this.ownerArticle(id, userId);
-    return this.article_repository.update(id, updateArticle);
+    return this.articleRepository.update(id, updateArticle);
   }
 
   async remove(id: string, userId: string) {
     await this.ownerArticle(id, userId);
-    return this.article_repository.permanentlyDelete(id);
+    return this.articleRepository.permanentlyDelete(id);
   }
 }

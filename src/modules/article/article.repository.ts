@@ -12,8 +12,8 @@ export class ArticleRepository
 {
   constructor(
     @InjectModel(Article.name)
-    private readonly article_repository: Model<Article>,
+    private readonly articleRepository: Model<Article>,
   ) {
-    super(article_repository);
+    super(articleRepository);
   }
 }

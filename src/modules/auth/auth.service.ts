@@ -5,12 +5,12 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly user_service: UserService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.user_service.findOneByCondition({ username });
+    const user = await this.userService.findOneByCondition({ username });
 
     if (!user) return null;
 
