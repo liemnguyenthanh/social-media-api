@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { BaseServiceAbstract } from 'src/services/base.abstract.service';
 
 import { User } from './entities/user.entity';
-import { UserRepositoryInterface } from './user.interface';
+import { UserRepositoryInterface } from './users.interface';
 
 @Injectable()
 export class UserService extends BaseServiceAbstract<User> {

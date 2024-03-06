@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Type } from 'class-transformer';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { BaseEntity } from 'src/modules/shared/base/base.entity';
-import { User } from 'src/modules/user/entities/user.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 
 export type ArticleDocument = HydratedDocument<Article>;
 

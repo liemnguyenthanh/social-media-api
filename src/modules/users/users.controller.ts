@@ -2,7 +2,7 @@ import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import MongooseClassSerializerInterceptor from 'src/interceptors/mongoose-class-serializer.interceptor';
 import { User } from './entities/user.entity';
-import { UserService } from './user.service';
+import { UserService } from './users.service';
 
 @Controller('user')
 @UseInterceptors(MongooseClassSerializerInterceptor(User))

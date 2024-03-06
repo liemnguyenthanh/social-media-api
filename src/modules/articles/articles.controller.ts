@@ -17,7 +17,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import MongooseClassSerializerInterceptor from 'src/interceptors/mongoose-class-serializer.interceptor';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { ArticleService } from './article.service';
+import { ArticleService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { Article } from './entities/article.entity';
 import { UpdateArticleDto } from './dto/update-article.dto';
