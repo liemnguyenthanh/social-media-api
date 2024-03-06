@@ -46,8 +46,8 @@ export abstract class BaseRepositoryAbstract<T extends BaseEntity>
   }
 
   async softDelete(id: string): Promise<boolean> {
-    const delete_item = await this.model.findById(id);
-    if (!delete_item) {
+    const deleteItem = await this.model.findById(id);
+    if (!deleteItem) {
       return false;
     }
 
@@ -57,8 +57,8 @@ export abstract class BaseRepositoryAbstract<T extends BaseEntity>
   }
 
   async permanentlyDelete(id: string): Promise<boolean> {
-    const delete_item = await this.model.findById(id);
-    if (!delete_item) {
+    const deleteItem = await this.model.findById(id);
+    if (!deleteItem) {
       return false;
     }
     return !!(await this.model.findByIdAndDelete(id));
